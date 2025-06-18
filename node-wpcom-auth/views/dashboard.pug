@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h2 Dashboard
+  if user
+    h3 User Info
+    ul
+      li strong ID: #{user.ID}
+      li strong Username: #{user.username}
+      li strong Display Name: #{user.display_name}
+      li strong Email: #{user.email}
+  if blog_id
+    h3 Blog Info
+    ul
+      li strong Blog ID: #{blog_id}
+      li strong Blog URL: #{blog_url}
+  h3 Publish a Post
+  form(action='/publish' method='POST')
+    label(for='blog_id') Blog ID:
+    input(type='text' name='blog_id' id='blog_id' value=blog_id required)
+    br
+    label(for='title') Title:
+    input(type='text' name='title' id='title' required)
+    br
+    label(for='content') Content:
+    textarea(name='content' id='content' required)
+    br
+    button(type='submit') Publish
+  if post
+    h3 Post Published!
+    ul
+      li strong Title: #{post.title}
+      li strong ID: #{post.ID}
+      li strong URL: 
+        a(href=post.URL target='_blank') #{post.URL} 

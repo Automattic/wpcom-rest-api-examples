@@ -1,0 +1,20 @@
+{
+  "name": "wp-oauth-testing-app",
+  "description": "A application to test the wp-oauth",
+  "version": "0.0.1",
+  "author": {
+    "name": "Damian Suarez",
+    "email": "rdsuarez@gmail.com"
+  },
+  "main": "./index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "pug": "^3.0.3",
+    "wpcom": "^5.4.2",
+    "wpcom-oauth": "^0.3.4"
+  }
+}

@@ -1,0 +1,11 @@
+
+extends layout
+
+block content
+  include intro
+
+  h2 Ready to request the access token
+  p The code gotten is <em>#{code}</em>. This code allow us get for the access token.
+
+  p.msg
+    a(href='/get_token/' + code) Let's get it!
