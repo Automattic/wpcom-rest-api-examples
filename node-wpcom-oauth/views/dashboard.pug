@@ -1,0 +1,59 @@
+extends layout
+
+block content
+  .dashboard-flex
+    .dashboard-left
+      h2 Dashboard
+      if user
+        h3 User Info
+        table
+          tr
+            td ID
+            td #{user.ID}
+          tr
+            td Username
+            td #{user.username}
+          tr
+            td Display Name
+            td #{user.display_name}
+          tr
+            td Email
+            td #{user.email}
+      if blog_id
+        h3 Blog Info
+        table
+          tr
+            td Blog ID
+            td #{blog_id}
+          tr
+            td Blog URL
+            td.url #{blog_url}
+      if post
+        h3.ok Post Published!
+        table.ok
+          tr
+            td Title
+            td #{post.title}
+          tr
+            td ID
+            td #{post.ID}
+          tr
+            td URL
+            td.url
+              a(href=post.URL target='_blank') #{post.URL}
+        button.cta_button
+          a(href=post.URL target='_blank') View Post
+    .dashboard-right
+      h3 Publish a Post
+      .publish-post-container
+        form.publish-post-form(action='/publish' method='POST')
+          label.form-label(for='blog_id') Blog ID:
+          input.form-input(type='text' name='blog_id' id='blog_id' value=blog_id required)
+          br
+          label.form-label(for='title') Title:
+          input.form-input(type='text' name='title' id='title' required)
+          br
+          label.form-label(for='content') Content:
+          textarea.form-textarea(name='content' id='content' required)
+          br
+          button.form-button(type='submit') Publish 

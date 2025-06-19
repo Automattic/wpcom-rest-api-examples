@@ -12,7 +12,7 @@ create your application to use to get the oauth access token.
 
 ### 2 - Create a settings file
 
-In the `example/` folder copy `settings_example.json` to `settings.json` and
+Copy `settings_example.json` to `settings.json` and
 customize as needed.  Your `settings.json` file should look something like
 this:
 
@@ -33,7 +33,7 @@ Other settings that you can change, if needed:
 
 ### 3 - Update dependencies
 
-From the `example/` folder, download and install the npm dependencies:
+Download and install the npm dependencies:
 
 ```cli
 $ npm install
@@ -42,5 +42,5 @@ $ npm install
 ### 4 - Run the application
 
 ```cli
-$ node index.js
+$ npm start
 ```
