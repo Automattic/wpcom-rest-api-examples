@@ -4,16 +4,28 @@ block content
   h2 Dashboard
   if user
     h3 User Info
-    ul
-      li strong ID: #{user.ID}
-      li strong Username: #{user.username}
-      li strong Display Name: #{user.display_name}
-      li strong Email: #{user.email}
+    table
+      tr
+        td ID
+        td #{user.ID}
+      tr
+        td Username
+        td #{user.username}
+      tr
+        td Display Name
+        td #{user.display_name}
+      tr
+        td Email
+        td #{user.email}
   if blog_id
     h3 Blog Info
-    ul
-      li strong Blog ID: #{blog_id}
-      li strong Blog URL: #{blog_url}
+    table
+      tr
+        td Blog ID
+        td #{blog_id}
+      tr
+        td Blog URL
+        td.url #{blog_url}
   h3 Publish a Post
   form(action='/publish' method='POST')
     label(for='blog_id') Blog ID:
@@ -27,9 +39,17 @@ block content
     br
     button(type='submit') Publish
   if post
-    h3 Post Published!
-    ul
-      li strong Title: #{post.title}
-      li strong ID: #{post.ID}
-      li strong URL: 
-        a(href=post.URL target='_blank') #{post.URL} 
+    h3.ok Post Published!
+    table.ok
+      tr
+        td Title
+        td #{post.title}
+      tr
+        td ID
+        td #{post.ID}
+      tr
+        td URL
+        td.url
+          a(href=post.URL target='_blank') #{post.URL}
+    p.msg
+      a(href=post.URL target='_blank') View Post 

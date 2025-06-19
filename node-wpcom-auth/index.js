@@ -6,6 +6,7 @@ var URL = require('url');
 var express = require('express');
 var WPOAuth = require('wpcom-oauth');
 var session = require('express-session');
+const fetch = require('node-fetch');
 
 /**
  * Get settings data
@@ -68,42 +69,79 @@ app.get('/get_token/:code', function(req, res){
 });
 
 // Dashboard route for user info and publishing
-app.get('/dashboard', function(req, res) {
+app.get('/dashboard', async function(req, res) {
   if (!req.session.access_token) {
+    console.log('No access token in session');
     return res.redirect('/');
   }
-  var wpcom = require('wpcom')(req.session.access_token);
-  wpcom.me().get(function(err, userInfo) {
-    if (err) return res.render('error', err);
+  try {
+    console.log('Fetching user info with token:', req.session.access_token);
+    const response = await fetch('https://public-api.wordpress.com/rest/v1.1/me', {
+      headers: {
+        'Authorization': `Bearer ${req.session.access_token}`
+      }
+    });
+    console.log('API response status:', response.status);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('API error response:', errorText);
+      let errorObj;
+      try {
+        errorObj = JSON.parse(errorText);
+      } catch (e) {
+        errorObj = { error: 'API Error', description: errorText };
+      }
+      // Ensure error and description fields exist
+      if (!errorObj.error) errorObj.error = 'API Error';
+      if (!errorObj.description) errorObj.description = errorText;
+      return res.render('error', errorObj);
+    }
+    const userInfo = await response.json();
     res.render('dashboard', {
       user: userInfo,
       blog_id: req.session.blog_id,
       blog_url: req.session.blog_url
     });
-  });
+  } catch (err) {
+    console.error('Exception in /dashboard:', err);
+    res.render('error', { error: 'Exception', description: err.message });
+  }
 });
 
 // Handle publishing post
-app.post('/publish', express.urlencoded({ extended: true }), function(req, res) {
+app.post('/publish', express.urlencoded({ extended: true }), async function(req, res) {
   if (!req.session.access_token) {
     return res.redirect('/');
   }
-  var wpcom = require('wpcom')(req.session.access_token);
-  var blogId = req.body.blog_id;
-  var title = req.body.title;
-  var content = req.body.content;
-  wpcom.site(blogId).post({
-    title: title,
-    content: content
-  }, function(err, post) {
-    if (err) return res.render('error', err);
+  const blogId = req.body.blog_id;
+  const title = req.body.title;
+  const content = req.body.content;
+  try {
+    const response = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${blogId}/posts/new/`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${req.session.access_token}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        title,
+        content
+      })
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      return res.render('error', error);
+    }
+    const post = await response.json();
     res.render('dashboard', {
       user: null,
       blog_id: blogId,
       blog_url: req.session.blog_url,
       post: post
     });
-  });
+  } catch (err) {
+    res.render('error', { message: err.message });
+  }
 });
 
 var port = settings.port || 3001;
