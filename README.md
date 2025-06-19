@@ -1,6 +1,6 @@
 # WordPress.com OAuth REST API Example Projects
 
-This repository contains multiple example projects demonstrating how to implement authentication with WordPress.com (WPCC) using OAuth and the REST API, across several popular languages and frameworks.
+This repository includes several example projects that demonstrate how to use OAuth to request explicit user permissions and perform authenticated operations on their behalf via token-secured endpoints, using a variety of popular languages and frameworks.
 
 ## Overview
 
