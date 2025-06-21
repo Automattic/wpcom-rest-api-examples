@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { AUTH_URL, PROFILE_URL, EXCHANGE_TOKEN_URL, OAUTH_PARAMS, REDIRECT_URI } from "../../config";
+import { AUTH_URL, PROFILE_URL, OAUTH_PARAMS, REDIRECT_URI } from "../../config";
 
 console.log(OAUTH_PARAMS);
 // Helper function to generate a random state string for OAuth2

@@ -29,6 +29,12 @@ $tokenData = json_decode($response, true);
 
 if (isset($tokenData['access_token'])) {
     $_SESSION['access_token'] = $tokenData['access_token'];
+    if (isset($tokenData['blog_id'])) {
+        $_SESSION['blog_id'] = $tokenData['blog_id'];
+    }
+    if (isset($tokenData['blog_url'])) {
+        $_SESSION['blog_url'] = $tokenData['blog_url'];
+    }
     header('Location: profile.php');
     exit;
 } else {

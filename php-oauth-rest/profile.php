@@ -11,6 +11,8 @@ $headers = [
     'Authorization: Bearer ' . $access_token
 ];
 
+echo $_SESSION['access_token'];
+
 // Get user info from WordPress.com API
 $apiUrl = 'https://public-api.wordpress.com/rest/v1.1/me';
 $ch = curl_init();
@@ -24,20 +26,6 @@ $user = json_decode($response, true);
 
 if (isset($user['error'])) {
     die('Error fetching user data: ' . $user['message']);
-}
-
-$site = [];
-// Fetch and display info for the site from the user's meta.links.site
-if (isset($user['meta']['links']['site'])) {
-    $siteUrl = $user['meta']['links']['site'];
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $siteUrl);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // For testing only
-    $siteResponse = curl_exec($ch);
-    curl_close($ch);
-    $site = json_decode($siteResponse, true);
 }
 
 // Handle post creation
@@ -94,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['site_id'], $_POST['po
         <p>Username: <?= htmlspecialchars($user['username']) ?></p>
         <p>Email: <?= htmlspecialchars($user['email']) ?></p>
         <p>Primary Blog: <?= htmlspecialchars($user['primary_blog_url'] ?? 'N/A') ?></p>
-        <p>Selected Blog: <mark><a href="<?php echo htmlspecialchars($site['URL']); ?>" target="_blank"><?php echo htmlspecialchars($site['URL']); ?></a></mark></p>
+        <p>Selected Blog: <mark><a href="<?php echo htmlspecialchars($_SESSION['blog_url']); ?>" target="_blank"><?php echo htmlspecialchars($_SESSION['blog_url']); ?></a></mark></p>
         <div style="clear: both;"></div>
 
         <a href="logout.php" class="logout-btn">Logout</a>
@@ -105,8 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['site_id'], $_POST['po
         <h2>Add a New Post</h2>
         <?php if ($postMessage) echo $postMessage; ?>
         <form method="post" style="margin-top:15px;">
-            <p>Publish to: <a href="<?php echo htmlspecialchars($site['URL']); ?>" target="_blank"><?php echo htmlspecialchars($site['URL']); ?></a></p>
-            <input type="hidden" name="site_id" value="<?php echo htmlspecialchars($site['ID']); ?>">
+            <p>Publish to: <a href="<?php echo htmlspecialchars($_SESSION['blog_url']); ?>" target="_blank"><?php echo htmlspecialchars($_SESSION['blog_url']); ?></a></p>
+            <input type="hidden" name="site_id" value="<?php echo htmlspecialchars($_SESSION['blog_id']); ?>">
             <label for="post_title">Title:</label><br>
             <input type="text" name="post_title" id="post_title" required style="width:100%;padding:8px;margin-bottom:10px;"><br>
             <label for="post_content">Content:</label><br>
