@@ -1,20 +1,20 @@
-# WordPress.com OAuth2 React Demo (Implicit Flow)
+# WordPress.com Application Password React Demo
 
-> **Note:** This demo specifically showcases the use of the **Implicit OAuth2 (client-side) flow** as described in the [WordPress.com OAuth2 documentation](https://developer.wordpress.com/docs/oauth2/#5-client-implicit-oauth). This means the access token is returned directly to the browser and is suitable for single-page applications (SPAs) where the client secret must not be exposed.
+This project demonstrates how to use **WordPress.com Application Passwords** to authenticate with the WordPress REST API and publish a post to a connected WordPress.com blog.
 
-This project demonstrates how to implement WordPress.com OAuth2 authentication in a modern React app (with Vite) using the **implicit grant flow**. After logging in with WordPress.com, users can view their profile and publish a post to their connected WordPress.com blog.
+This project demonstrates how to implement WordPress.com Application Password authentication in a modern React app (with Vite). Users can input their site URL, username, and a generated application password to publish a post to their WordPress.com blog.
 
 ## Features
 
-- **WordPress.com OAuth2 Login (Implicit Flow):** Authenticate with your WordPress.com account using the client-side implicit grant flow.
-- **Profile Display:** View your WordPress.com profile information after login.
+- **WordPress.com Application Password Authentication:** Authenticate with your WordPress site using Application Passwords.
 - **Publish Post:** Create and publish a post to your WordPress.com blog from the app.
 - **Modern Stack:** React (Vite) frontend and clean code structure.
 
 ## Prerequisites
 
 - Node.js (v18+ recommended)
-- A registered WordPress.com OAuth2 application ([instructions](https://developer.wordpress.com/docs/oauth2/))
+- A WordPress.com account and a site.
+- A generated Application Password. You can create one by navigating to your WordPress.com profile's security settings.
 
 ## Setup Instructions
 
@@ -22,7 +22,7 @@ This project demonstrates how to implement WordPress.com OAuth2 authentication i
 
    ```bash
    git clone <this-repo-url>
-   cd react-implicit-oauth-rest
+   cd react-application-password
    ```
 
 2. **Install dependencies:**
@@ -31,20 +31,7 @@ This project demonstrates how to implement WordPress.com OAuth2 authentication i
    npm install
    ```
 
-3. **Configure environment variables:**
-
-   Create a `.env` file in the root of `react-implicit-oauth-rest` with the following variables:
-
-   ```env
-   VITE_WPCC_CLIENT_ID=your_wordpress_client_id
-   VITE_WPCC_REDIRECT_URI=http://localhost:5173
-   ```
-
-   - `VITE_WPCC_CLIENT_ID` can be obtained by [creating an Application in WordPress.com](https://developer.wordpress.com/apps/new).
-   - `VITE_WPCC_REDIRECT_URI` must be exactly the same as the redirect URL you used when creating [the Application at WordPress.com](https://developer.wordpress.com/apps/new) (by default `http://localhost:5173` for this demo).
-   - **No client secret is needed for the implicit flow.**
-
-4. **Start the app:**
+3. **Start the app:**
 
    ```bash
    npm start
@@ -52,20 +39,19 @@ This project demonstrates how to implement WordPress.com OAuth2 authentication i
 
    This will launch the React frontend (on port 5173).
 
-5. **Open your browser:**
+4. **Open your browser:**
 
-   Visit [http://localhost:5173](http://localhost:5173) and click "Login with WordPress.com" to begin the OAuth2 implicit flow.
+   Visit [http://localhost:5173](http://localhost:5173), fill in your site URL, username, and application password, and publish a post.
 
 ## Project Structure
 
 - `src/` — React frontend code
-- `config.js` — OAuth2 and API endpoint configuration
+- `src/components/PublishPost.jsx` — The main component for handling authentication and publishing.
 
 ## Notes
 
-- This demo uses the **implicit OAuth2 flow** ([see docs](https://developer.wordpress.com/docs/oauth2/#5-client-implicit-oauth)), which is suitable for client-side applications. The access token is returned in the URL fragment after authentication and is managed entirely in the browser.
-- You can publish posts to the connected blog after authenticating.
-- For production, update the redirect URIs and consider HTTPS.
+- This demo uses **Application Passwords**, which are a secure way to grant applications access to your account without sharing your main password.
+- For production, consider using a more robust state management solution and error handling.
 
 ---
 
